@@ -1,0 +1,94 @@
+{% extends "userbase.html" %}
+
+{% block content %}
+<div class="container">
+
+    <div class="jumptron text-center">
+      <h1>Welcome {{ user.first_name }} {{ user.last_name }} </h1>
+    </div>
+
+
+    <div class="jumptron" style="display: flex; flex-direction: column; gap: 75px;">
+        {% if user.projects %}
+
+            {% for project in user.projects %}
+                <div class="project-container">
+                    <table class="table table-bordered" style="margin-bottom: 0px;">
+                        <thead>
+                          <tr>
+                            <th>Project</th>
+                              <th>Name</th>
+                              <th>Description</th>
+                              <th>Deadline</th>
+                              <th>Status</th>
+                              <th colspan="2" class="text-center">Actions</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr class="">
+                                <td></td>
+                                <td>{{ project.project_name }}</td>
+                                <td>{{ project.description }}</td>
+                                <td>{{ project.project_deadline }}</td>
+                                <td>{{ project.status.description }}</td>
+                                <td class="text-center">
+                                    <a href="{{ url_for('deleteProject', project_id=project.project_id) }}" class="btn btn-danger">Delete</a>
+                                    <a href="{{ url_for('editProject', project_id=project.project_id) }}" class="btn btn-warning">Edit</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    {% if project.tasks %}
+                        <table class="table table-bordered" style="">
+                            <thead>
+                              <tr>
+                                <th>Task</th>
+                                  <th>Name</th>
+                                  <th>Priority</th>
+                                  <th>Deadline</th>
+                                  <th>Status</th>
+                                  <th colspan="2" class="text-center">Actions</th>
+                              </tr>
+                            </thead>
+                        {% for task in project.tasks %}
+                            <tbody>
+                                <tr class="">
+                                    <td></td>
+                                    <td>{{ task.description }}</td>
+                                    <td>{{ task.priority.text }}</td>
+                                    <td>{{ task.deadline }}</td>
+                                    <td>{{ task.status.description }}</td>
+                                    <td class="text-center">
+                                        <a href="{{ url_for('deleteTask', task_id=task.task_id) }}" class="btn btn-danger">Delete</a>
+                                        <a href="{{ url_for('editTask', task_id=task.task_id) }}" class="btn btn-warning">Edit</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        {% endfor %}
+                        </table>
+                    {% else %}
+                        <h5 style="padding-top: 15px;">No Task.</h5>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+        <style>
+            .table td {
+                width: 190px;
+            }
+        </style>
+
+
+        {% else %}
+            <div class="alert alert-warning text-center">
+                <h4>You dont have any project in list.</h4>
+                <p class="lead"></p>
+              <p><a class="btn btn-lg btn-success" href="/newProject">New Project</a></p>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

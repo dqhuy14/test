@@ -1,0 +1,47 @@
+{% extends "userbase.html" %}
+
+{% block content %}
+	<!--Body-->
+	<div class="container">
+        <div class="jumptron text-center">
+
+            {% if form.inputName.data %}
+                <h1>Edit Project</h1>
+            {% else %}
+                <h1>New Project</h1>
+            {% endif %}
+
+
+            <form action="" method="post" >
+                {{ form.hidden_tag() }}
+
+
+                    {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label(class="sr-only") }}
+                        {{ field(class="form-control", placeholder=field.name) }}
+
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>Error: </strong>{{ error }}
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <button class="btn btn-primary btn-block d-block" type="submit">
+                        {% if form.inputName.data %}
+                            Save changes
+                        {% else %}
+                            Add
+                        {% endif %}
+                    </button>
+
+                    <a button type="button" class="btn btn-danger btn-lg btn-block" href="/projectHome">Cancel</a>
+            </form>
+
+        </div>
+	</div>
+{% endblock %}
